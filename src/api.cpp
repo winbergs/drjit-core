@@ -935,8 +935,10 @@ uint32_t jit_var_opaque_width(uint32_t index) {
     uint32_t width_index =
         jitc_var_literal(backend, VarType::UInt32, &var_size, 1, true);
 
-    ThreadState *ts = thread_state(backend);
-    ts->notify_opaque_width(index, width_index);
+    if (jitc_var(index)->is_evaluated()) {
+        ThreadState *ts = thread_state(backend);
+        ts->notify_opaque_width(index, width_index);
+    }
 
     return width_index;
 }
